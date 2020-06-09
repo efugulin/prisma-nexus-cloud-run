@@ -10,37 +10,35 @@ FROM base AS builder
 
 # Install production dependencies
 COPY *.json yarn.lock ./
-COPY packages/common/*.json ./packages/common/
-COPY packages/backend/*.json ./packages/backend/
+COPY configs/tsconfig-base.json ./configs/
+COPY packages/api/*.json ./packages/api/
 
-RUN yarn install --production --pure-lockfile
-RUN cp -RL packages/backend/node_modules/ /tmp/node_modules/
+RUN yarn install --production --pure-lockfile --ignore-scripts
+RUN cp -RL packages/api/node_modules/ /tmp/node_modules/
 
 # Install all dependencies
-RUN yarn install --pure-lockfile
+RUN yarn install --pure-lockfile --ignore-scripts
 
 # Copy source files
-COPY packages/common/ ./packages/common/
-COPY packages/backend/ ./packages/backend/
+COPY packages/api/ ./packages/api/
 
 # Build
-RUN yarn --cwd ./packages/common/ build
-RUN yarn --cwd ./packages/backend/ generate
-RUN yarn --cwd ./packages/backend/ build
+RUN yarn --cwd ./packages/api/ generate
+RUN yarn --cwd ./packages/api/ build
 
 ### RUNNER ###
 FROM base
 
 # Copy runtime dependencies
 COPY --from=builder /tmp/node_modules/ ./node_modules/
-COPY --from=builder /app/packages/backend/node_modules/@prisma/client/ ./node_modules/@prisma/client/
-COPY --from=builder /app/packages/graphql/node_modules/.prisma/client/ ./node_modules/.prisma/client/
-COPY --from=builder /app/packages/common/dist/ ./node_modules/common/dist/
+COPY --from=builder /app/packages/api/node_modules/@prisma/client/ ./node_modules/@prisma/client/
+COPY --from=builder /app/packages/api/node_modules/.prisma/client/ ./node_modules/.prisma/client/
 
 # Copy runtime project
-COPY --from=builder /app/packages/backend/dist/src/ ./src/
-COPY packages/backend/package.json ./
+COPY --from=builder /app/packages/api/dist/src/ ./src/
+COPY packages/api/scripts/ ./scripts/
+COPY packages/api/package.json ./
 
 USER node
 
-CMD ["node", "-r", "tsconfig-paths/register", "src/server.js"]
+CMD ["yarn", "start:prod"]

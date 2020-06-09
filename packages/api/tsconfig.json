@@ -5,6 +5,7 @@
     "target": "ES2019",
     "module": "CommonJS",
     "outDir": "./dist",
+    "rootDir": "./",
     "baseUrl": "./",
     "paths": {
       "~/*": ["src/*"]
