@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    // Enable strictest settings like strictNullChecks & noImplicitAny.
+    "strict": true,
+    "experimentalDecorators": true
+  }
+}

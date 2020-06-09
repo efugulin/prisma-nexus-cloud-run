@@ -1,0 +1,22 @@
+{
+  "name": "infrastructure",
+  "main": "src/index.ts",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "pulumi:up": "pulumi up",
+    "pulumi:refresh": "pulumi refresh",
+    "test": "echo \"No test for now\"",
+    "check-eslint": "eslint --ext .ts,.js src/",
+    "check-typescript": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pulumi/gcp": "3.6.0",
+    "@pulumi/pulumi": "2.2.1",
+    "@pulumi/random": "2.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "12.12.44",
+    "typescript": "3.9.5"
+  }
+}
