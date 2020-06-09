@@ -37,7 +37,11 @@ COPY --from=builder /app/packages/api/node_modules/.prisma/client/ ./node_module
 # Copy runtime project
 COPY --from=builder /app/packages/api/dist/src/ ./src/
 COPY packages/api/scripts/ ./scripts/
-COPY packages/api/package.json ./
+COPY packages/api/*.json ./
+
+# Allow node user to create config
+RUN mkdir -p ./configs
+RUN chown node ./configs
 
 USER node
 

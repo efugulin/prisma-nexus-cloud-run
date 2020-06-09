@@ -52,7 +52,7 @@ async function main() {
   }
 
   const content = lines.join('\n');
-  const envPath = path.join(__dirname, '..', 'config', 'production.env');
+  const envPath = path.join(__dirname, '..', 'configs', 'production.env');
 
   await mkdir(path.dirname(envPath), { recursive: true });
   await writeFile(envPath, content);
