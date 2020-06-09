@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+model Event {
+  id          String    @default(uuid()) @id
+  name        String
+  description String
+  venue       String
+  address     Address?  @relation(fields: [addressId], references: [id])
+  addressId   String?
+  startsAt    DateTime?
+  endsAt      DateTime?
+  ageLimit    AgeLimit
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum AgeLimit {
+  ALL
+  ABOVE_18
+  ABOVE_21
+}
+
+model Address {
+  id        String   @default(uuid()) @id
+  line1     String
+  line2     String?
+  city      String
+  state     String
+  country   String
+  zipCode   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // Virtual relations
+  event     Event?
+}

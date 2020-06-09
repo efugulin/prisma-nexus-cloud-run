@@ -1,0 +1,14 @@
+version: '3'
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: efugulin
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_USER: service
+    image: postgres:11
+    ports:
+      - '35432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+volumes:
+  postgres: ~
