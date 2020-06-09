@@ -21,6 +21,10 @@ export const schema = makeSchema({
         ),
         alias: 'ctx',
       },
+      {
+        source: '.prisma/client/index.d.ts',
+        alias: 'db',
+      },
     ],
     contextType: 'ctx.Context',
   },

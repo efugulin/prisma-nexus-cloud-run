@@ -4,6 +4,7 @@
  */
 
 import * as ctx from './context/index';
+import * as db from '.prisma/client/index';
 
 declare global {
   interface NexusGen extends NexusGenTypes {}
@@ -12,18 +13,12 @@ declare global {
 export interface NexusGenInputs {}
 
 export interface NexusGenEnums {
-  AgeLimit: 'ABOVE_18' | 'ABOVE_21' | 'ALL';
+  AgeLimit: db.AgeLimit;
 }
 
 export interface NexusGenRootTypes {
-  Event: {
-    // root type
-    ageLimit: NexusGenEnums['AgeLimit']; // AgeLimit!
-    description: string; // String!
-    id: string; // ID!
-    name: string; // String!
-    venue: string; // String!
-  };
+  Address: db.Address;
+  Event: db.Event;
   Query: {};
   String: string;
   Int: number;
@@ -37,8 +32,19 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 }
 
 export interface NexusGenFieldTypes {
+  Address: {
+    // field return type
+    city: string; // String!
+    country: string; // String!
+    id: string; // ID!
+    line1: string; // String!
+    line2: string | null; // String
+    state: string; // String!
+    zipCode: string; // String!
+  };
   Event: {
     // field return type
+    address: NexusGenRootTypes['Address'] | null; // Address
     ageLimit: NexusGenEnums['AgeLimit']; // AgeLimit!
     description: string; // String!
     id: string; // ID!
@@ -47,7 +53,7 @@ export interface NexusGenFieldTypes {
   };
   Query: {
     // field return type
-    ok: boolean; // Boolean!
+    events: NexusGenRootTypes['Event'][]; // [Event!]!
   };
 }
 
@@ -57,7 +63,7 @@ export interface NexusGenAbstractResolveReturnTypes {}
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = 'Event' | 'Query';
+export type NexusGenObjectNames = 'Address' | 'Event' | 'Query';
 
 export type NexusGenInputNames = never;
 
